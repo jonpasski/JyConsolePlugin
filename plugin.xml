@@ -25,5 +25,22 @@
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
 		</key>
 	</extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          class="com.aspectsecurity.jyconsole.preferences.JyConsolePreferencePage"
+          id="com.aspectsecurity.jyconsole.preferences.JyConsolePreferencePage"
+          name="JyConsole Preferences">
+    </page>
+ </extension>
+ <extension
+       point="org.eclipse.core.runtime.preferences">
+    <initializer
+          class="com.aspectsecurity.jyconsole.preferences.PreferenceInitializer">
+    </initializer>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+ </extension>
 	
 </plugin>

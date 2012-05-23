@@ -1,6 +1,8 @@
 package com.aspectsecurity.jyconsole.editors;
 
+import com.aspectsecurity.jyconsole.Activator;
 import com.aspectsecurity.jyconsole.JythonConsole;
+import com.aspectsecurity.jyconsole.preferences.PreferenceConstants;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -11,6 +13,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
@@ -24,6 +27,9 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.python.core.PyDictionary;
+import org.python.core.PyList;
+import org.python.core.PySystemState;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
@@ -53,6 +59,9 @@ public class JythonEditor extends TextEditor
         FileEditorInput input = (FileEditorInput)JythonEditor.this.getEditorInput();
         final String path = getPath(input);
 
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        final String apiDirectory = store.getString(PreferenceConstants.P_PATH);
+        
         IDocumentProvider provider = JythonEditor.this.getDocumentProvider();
         IDocument doc = provider.getDocument(JythonEditor.this.getEditorInput());
 
@@ -77,7 +86,14 @@ public class JythonEditor extends TextEditor
 
             try
             {
-              PythonInterpreter interp = new PythonInterpreter();
+              PyDictionary pyDict = new PyDictionary();
+              PySystemState pyState = new PySystemState();
+              PyList apiDirectories = new PyList();
+              
+              apiDirectories.add(apiDirectory);
+              pyState.path = apiDirectories;
+            	
+              PythonInterpreter interp = new PythonInterpreter(pyDict, pyState);
               interp.setOut(out);
               interp.setErr(out);
               interp.exec(script);
