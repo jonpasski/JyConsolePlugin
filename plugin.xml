@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.editors">
+		<editor name="JyConsole Editor" extensions="py" icon="icons/sample.gif"
+			contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+			class="com.aspectsecurity.jyconsole.editors.JythonEditor" id="com.aspectsecurity.jyconsole.editors.JythonEditor">
+		</editor>
+	</extension>
+
+	<extension point="org.eclipse.ui.commands">
+		<command id="jyconsole.RunScript" name="Run script"></command>
+
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler class="com.aspectsecurity.jyconsole.RunScriptHandler" commandId="jyconsole.RunScript">
+		</handler>
+	</extension>
+
+	<extension point="org.eclipse.ui.bindings">
+		<key 
+			sequence="CTRL+R"
+			commandId="jyconsole.RunScript"
+			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+		</key>
+	</extension>
+	
+</plugin>
